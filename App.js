@@ -8,23 +8,27 @@ import AllExpenses from './screens/AllExpenses';
 import { StyleSheet} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Icon } from "@rneui/themed";
+import IconButton from './componants/IconButton';
+import { GlobalStyle } from './constant/styles';
 
  const Stack = createNativeStackNavigator();
 const BottomTab =createBottomTabNavigator();
 
 function Tab(){ 
 return(
-<BottomTab.Navigator  screenOptions={{
-    headerStyle:{backgroundColor: '#3e04c3'},
-    headerTintColor: '#e4d9fd',
-    tabBarStyle: {backgroundColor:'#3e04c3'},
-    tabBarActiveTintColor:'#3e04c3',
-  }} >
+<BottomTab.Navigator  screenOptions={({navigation}) => ({
+    headerStyle:{backgroundColor:GlobalStyle.color.primary500},
+    headerTintColor:GlobalStyle.color.primary50,
+    tabBarStyle: {backgroundColor:GlobalStyle.color.primary500},
+    tabBarActiveTintColor:GlobalStyle.color.accent500,
+    headerRight: ({tintColor}) => <IconButton icon='add' size={24} color={tintColor} onPress={() => {navigation.navigate('ManageExpenses')}}/>
+  })} >
       <BottomTab.Screen name='RecentExpenses' 
       component={RecentExpenses} options={{
         title: 'Recent Expenses',
         tabBarLabel: 'Recent',
-        tabBarIcon: ({color,size}) => {return <Icon name='hourglass-outline'
+        tabBarIcon: ({color,size}) => {return <Icon 
+        name='hourglass'
         type='ionicon'
         color={color}
         size={size} />
@@ -52,11 +56,18 @@ return(
 return(
   <SafeAreaProvider style={styles.Screen}>
  <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator  screenOptions={
+        {
+          headerStyle:{ backgroundColor:GlobalStyle.color.primary500 },
+           headerTintColor:'white'
+        }
+      }>
     <Stack.Screen name='Tab' component={Tab}  options={{
     headerShown: false
   }}/>
-   <Stack.Screen name='ManageExpenses' component={manageExpenses}/>
+   <Stack.Screen name='ManageExpenses' component={manageExpenses}options={{
+    presentation:'modal'
+  }}/>
       </Stack.Navigator>
     </NavigationContainer>
     </SafeAreaProvider>

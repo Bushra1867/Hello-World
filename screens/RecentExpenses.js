@@ -11,7 +11,6 @@ import ExpensesOutPut from '../componants/ExpensesOutPut';
 }
 
 export default RecentExpenses;
-
 const styles = StyleSheet.create({
   screen: {
     padding:15

@@ -1,18 +1,25 @@
 
 import React from "react";
 import {Pressable, View, Text, StyleSheet}from 'react-native';
+import {getFormattedDate} from '../utility/date';
+import {useNavigation} from'@react-navigation/native'
+import { GlobalStyle } from "../constant/styles";
 
-function ExpenseItem({description,amount,date}){
+
+function ExpenseItem({id,description,amount,date}){
+    const navigation = useNavigation();
+    function pressHandler(){
+        navigation.navigate('ManageExpenses', {expenseId: id})
+    }
     return (
-<Pressable>
+<Pressable onPress={pressHandler} style={({pressed}) => pressed && styles.pressed}>
     <View  style={styles.expenseItem}>
         <View>
             <Text style={[styles.description, styles.defText]}>{description}  </Text>
-            <Text style={styles.defText}> {date.toString()}</Text>
+            <Text style={styles.defText}> {getFormattedDate(date)}</Text>
         </View>
         <View style={styles.amountContainer}>
-        <Text style={styles.defText}>Amount</Text>
-            <Text style={[styles.defText, styles.amount]}>{amount}</Text>
+            <Text style={styles.amount}>{amount}</Text>
         </View>
     </View>
 </Pressable>
@@ -25,18 +32,18 @@ const styles = StyleSheet.create({
     expenseItem:{
       padding:12,
       marginVertical:8,
-      backgroundColor: '#f7bc0c',
+      backgroundColor:GlobalStyle.color.primary500,
       flexDirection:'row',
       justifyContent:'space-between',
       borderRadius:6,
       elevation:3,
-      shadowColor:'#39324a',
+      shadowColor:GlobalStyle.color.gray500,
       shadowOffset:{width:1, height:1},
       shadowOpacity:0.4
 
     },
     defText:{
-color: '#3e04c3',
+color: GlobalStyle.color.primary50,
     },
 
     description:{
@@ -48,12 +55,22 @@ color: '#3e04c3',
         fontSize:14,
         marginBottom:4,
         fontWeight:'bold',
-        color:'red'
+        color:GlobalStyle.color.primary500
+
+
     },
     amountContainer:{
         flexDirection:'row',
-        justifyContent:'space-between',
+        justifyContent:'center',
         alignItems:'center',
-        width:'80%'
+        backgroundColor:'white',
+        paddingHorizontal:12,
+        paddingVertical:4,
+        borderRadius:4,
+        minWidth:80
+    },
+    pressed:{
+        opacity:0.75
+
     }
     });
